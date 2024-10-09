@@ -1,8 +1,8 @@
 /* General Styles */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #F7F9FA; 
-    color: #2D3E50; 
+    background-color: #1C1C28; /* Dark background for night mode */
+    color: #E0E0E0; /* Light text for contrast */
     margin: 0;
     padding: 0;
     line-height: 1.6;
@@ -15,8 +15,8 @@ body {
 }
 
 header {
-    background-color: #2D3E50; /* Cool, deep blue for seriousness */
-    color: #fff;
+    background-color: #2C2C3C; /* Darker header for night mode */
+    color: #E0E0E0;
     padding: 20px 0;
     text-align: center;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
@@ -25,7 +25,7 @@ header {
 header h1 {
     font-size: 2.5em;
     margin: 0;
-    font-family: 'Arial Black', sans-serif; /* Bold, sharp font */
+    font-family: 'Arial Black', sans-serif; 
     letter-spacing: 1px;
     text-transform: uppercase;
 }
@@ -37,7 +37,7 @@ nav {
 
 nav a {
     text-decoration: none;
-    color: #2D3E50;
+    color: #E0E0E0; /* Light text for nav links */
     margin: 0 12px;
     font-size: 1.1em;
     padding: 8px;
@@ -46,25 +46,25 @@ nav a {
 }
 
 nav a:hover {
-    color: #F44E3F; /* Sharp red for urgency */
+    color: #F44E3F; /* Sharp red remains for contrast */
     border-bottom: 2px solid #F44E3F;
 }
 
 /* Form Styles */
 form {
-    background-color: #FFFFFF;
+    background-color: #2C2C3C; /* Dark form background for night mode */
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin-top: 25px;
-    border: 1px solid #BDC3C7;
+    border: 1px solid #3A3A4D; /* Subtle border */
 }
 
 form label {
     display: block;
     font-size: 1.1em;
     margin-bottom: 8px;
-    color: #2D3E50;
+    color: #E0E0E0;
     font-weight: 600;
 }
 
@@ -74,23 +74,23 @@ form textarea {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #7F8C8D;
+    border: 1px solid #5A5A6D; /* Darker borders */
     border-radius: 4px;
-    background-color: #F9F9F9;
+    background-color: #1C1C28; /* Match night mode theme */
     font-size: 1.1em;
-    color: #2D3E50;
+    color: #E0E0E0;
     transition: border-color 0.3s ease;
 }
 
 form input[type="text"]:focus,
 form input[type="url"]:focus,
 form textarea:focus {
-    border-color: #F44E3F;
+    border-color: #F44E3F; /* Same sharp red for focus */
     outline: none;
 }
 
 form input[type="submit"] {
-    background-color: #2D3E50;
+    background-color: #F44E3F; /* Red for submission button */
     color: #fff;
     border: none;
     padding: 12px 20px;
@@ -101,12 +101,13 @@ form input[type="submit"] {
 }
 
 form input[type="submit"]:hover {
-    background-color: #F44E3F; /* Red urgency on hover */
+    background-color: #C0392B; /* Slightly darker red on hover */
 }
 
+/* Footer Styles */
 footer {
-    background-color: #2C3E50;
-    color: #fff;
+    background-color: #2C2C3C; /* Dark footer background */
+    color: #E0E0E0;
     text-align: center;
     padding: 15px 0;
     margin-top: 40px;
