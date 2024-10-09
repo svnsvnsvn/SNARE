@@ -11,7 +11,7 @@
  <h1>Snare</h1>       
 </header>
 <body>
-    <form action="/check_listing" method="POST">
+    <form action="/check_listing" method="POST" id="listing-form">
         <label for="url">Enter Listing URL:</label>
         <input type="text" id="url" name="url"><br>
         
@@ -19,6 +19,7 @@
         <input type="text" id="address" name="address"><br>
         
         <input type="submit" value="Check Listing">
-    </form>    
+    </form>
+    <div id = "result"></div>    
 </body>
 </html>
