@@ -17,6 +17,8 @@ async def check_listing(request: ListingRequest):  # Expecting the body to be pa
         # Step 1: Scrape the listing data from the URL
         listing_data = scrape_listing(request.url)
 
+        print("\nDone scraping. Now Detecting anomalies.")
+
         # Step 2: Detect anomalies in the scraped data
         anomalies = detect_anomalies(listing_data)
 
