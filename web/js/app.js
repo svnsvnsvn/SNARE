@@ -14,5 +14,6 @@ document.getElementById('listing-form').onsubmit = async function(e) {
         body: JSON.stringify({url, address})
     });
 
-    let result = await response.json
+    let result = await response.json();
+    document.getElementById('result').innerHTML = `The listing for ${result.address} is ${result.is_suspicious ? 'suspicious' : 'not suspicious'}`;
 };

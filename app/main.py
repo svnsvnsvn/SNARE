@@ -1,20 +1,11 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from fastapi import FastAPI
+from app.routes.listings import router as listings_router
 
 app = FastAPI()
 
-# Pydantic model for request validation
-
-class ListingRequest(BaseModel):
-    url: str
-    address: str
+# Include listings routes
+app.include_router(listings_router)
 
 @app.get("/")
 async def read_root():
-    return {"message": "Welcome to SNARE WEB: Scam Network Anomaly Recognition Engine - Web-based Evaluation Bot"}
-
-@app.post("/check_listing")
-async def check_listing(request: ListingRequest):
-
-    is_suspicious = False # This will be updated when scraping is integrated
-    return {"address": request.address, "is_suspicious": is_suspicious}
+    return {"message": "Welcome to SNARE WEB API: Scam Network Anomaly Recognition Engine - Web-based Evaluation Bot"}
