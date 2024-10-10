@@ -9,7 +9,10 @@ import re
 # Currently working to get Title, Price and Location. Will need to do more to get all features. 
 url1 = 'https://staugustine.craigslist.org/apa/d/saint-augustine-modern-bed-townhouse-in/7791808730.html'
 url2 = 'https://staugustine.craigslist.org/apa/d/saint-augustine-bedroom-bath-doublewide/7791918230.html'
-
+url3 = 'https://staugustine.craigslist.org/apa/d/saint-augustine-fully-furnished-studio/7791998736.html'
+url4 = 'https://jacksonville.craigslist.org/apa/d/jacksonville-one-month-free-by-hurry/7788164796.html#'
+url5 = 'https://gainesville.craigslist.org/apa/d/near-uf-spacious-bedroom-bath-apt-in/7789759036.html'
+url6 = 'https://orlando.craigslist.org/apa/d/casselberry-500-off-first-months-rent/7787017002.html#'
 
 
 def ScrapeData(url):
@@ -126,5 +129,5 @@ def ScrapeData(url):
 
 # Print the DataFrame
 # print(df)
+print(ScrapeData(url6))
 
-print(ScrapeData(url1))
