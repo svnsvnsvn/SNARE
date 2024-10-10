@@ -4,7 +4,7 @@
 from fastapi import APIRouter, HTTPException
 from app.models.listing import ListingRequest
 from ml.anomaly_detection import detect_anomalies, save_new_listing  # Import anomaly detection logic
-from app.utils.scraper import scrape_listing
+from app.utils.scrapeData import scrape_listing
 from ml.retrain import retrain_if_needed
 
 router = APIRouter()
