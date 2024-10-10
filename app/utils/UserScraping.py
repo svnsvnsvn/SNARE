@@ -15,7 +15,7 @@ url5 = 'https://gainesville.craigslist.org/apa/d/near-uf-spacious-bedroom-bath-a
 url6 = 'https://orlando.craigslist.org/apa/d/casselberry-500-off-first-months-rent/7787017002.html#'
 
 
-def ScrapeListing(url):
+def scrapeListing(url):
     response = requests.get(url)
 
     # Check if request was successful (status code 200)
@@ -129,5 +129,5 @@ def ScrapeListing(url):
 
 # Print the DataFrame
 # print(df)
-print(ScrapeData(url6))
+# print(ScrapeListing(url6))
 

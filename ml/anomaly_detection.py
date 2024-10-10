@@ -18,9 +18,13 @@ def preprocess_data(listing_data):
         tuple: Scaled feature values, original DataFrame.
 
     '''
+    print("First attempting to preprocess the data...")
+
     # Convert the scraped data (dictionary) into a DataFrame with a single row
     df = pd.DataFrame([listing_data])
 
+    print(df)
+    
     # List of features that you want to scale (must match model's feature set)
     # TODO: Should be the columns of the df because price per ratios and all the engineered features will have to be remade.
     features = ['Price per Bedroom', 'Price per Full Bathroom', 'Price per Total Bathroom',

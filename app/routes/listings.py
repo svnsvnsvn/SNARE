@@ -4,7 +4,7 @@
 from fastapi import APIRouter, HTTPException
 from app.models.listing import ListingRequest
 from ml.anomaly_detection import detect_anomalies, save_new_listing  # Import anomaly detection logic
-from app.utils.scrapeData import scrape_listing
+from app.utils.UserScraping import scrapeListing
 from ml.retrain import retrain_if_needed
 
 router = APIRouter()
@@ -15,7 +15,7 @@ async def check_listing(request: ListingRequest):  # Expecting the body to be pa
     print("Checking...")
     try:
         # Step 1: Scrape the listing data from the URL
-        listing_data = scrape_listing(request.url)
+        listing_data = scrapeListing(request.url)
 
         print("\nDone scraping. Now Detecting anomalies.")
 
