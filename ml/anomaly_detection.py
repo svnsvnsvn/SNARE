@@ -4,6 +4,74 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import IsolationForest
 from sklearn.cluster import DBSCAN
 
+"""
+TODO List for Dataset Enrichment:
+
+1. Convert Price to Numeric:
+   - Convert the 'price' field (e.g., '$1,349') to a floating-point number for easier manipulation.
+   - This will allow the creation of derived features like 'price per bedroom' and 'price per bathroom'.
+
+2. Derived Features:
+   - Price per Bedroom: Calculate the price per bedroom by dividing the total price by the number of bedrooms.
+   - Price per Bathroom: Similarly, calculate price per bathroom.
+   - Price per Square Foot: If square footage is available, compute price per square foot for better comparisons across listings.
+
+3. Latitude and Longitude as Numeric:
+   - Ensure that latitude and longitude are stored as floating-point numbers so they can be used for geospatial calculations, such as distances to points of interest.
+
+4. Listing Age:
+   - Calculate how many days the listing has been live by subtracting 'time_posted' from the current date.
+   - Older listings without activity might indicate suspicious or fraudulent behavior.
+
+5. Suspicious Keywords:
+   - Implement a search for specific keywords that could indicate scams or fraudulent behavior. For example, "wire money," "Western Union," or "cash only."
+   - Create a binary flag (0 or 1) based on whether these keywords are present in the description.
+
+6. Description Length:
+   - Calculate the length of the listing's description (number of characters). 
+   - Short or overly vague descriptions might be an indicator of scams.
+
+7. Amenities Count:
+   - Count the number of amenities mentioned in the description. 
+   - Listings with a very high or very low number of amenities may be suspicious. 
+   - Examples include 'Dishwasher', 'Walk-In Closet', 'Ceiling Fan', etc. 
+   - Create binary flags for the presence of important amenities, e.g., 'has_dishwasher', 'has_in_unit_laundry', etc.
+
+8. Image Extraction:
+   - Extract the URLs of the listing's images for potential use in reverse image searches, which can help detect reused or stock images, a common scam tactic.
+   - You could also count the number of images as a potential feature (listings with few or no images may be more suspicious).
+
+9. Geospatial Features:
+   - Calculate distances between the listing and key locations (e.g., universities, city centers, military bases).
+   - Listings that are geographically far from points of interest but have high prices could be flagged for further investigation.
+
+10. Phone Number Extraction:
+   - If the phone number is available in the description, extract it and store it. 
+   - Use it to identify duplicate listings that share the same contact information.
+
+11. Duplicate Listings:
+   - Track listings with similar or identical attributes (e.g., price, address, or phone number).
+   - Repeated listings in multiple locations may indicate fraudulent behavior.
+
+12. Clustering and Anomaly Detection (Future Step):
+   - Once the dataset is enriched, use clustering techniques like DBSCAN or Isolation Forest to group similar listings and detect outliers.
+   - Listings that deviate significantly from their clusters in terms of price, amenities, or other features could be considered suspicious.
+
+13. Testing:
+   - After enriching the dataset, test the scraping functions on multiple listings to ensure robustness.
+   - Handle edge cases where certain fields (like price or address) might be missing or formatted inconsistently.
+   - Verify that all derived features are calculated correctly and ensure that numeric and categorical data are properly formatted for model training.
+
+14. Expanding to Other Platforms:
+   - After refining the Craigslist scraper, extend similar scraping and enrichment logic to other platforms like Zillow and Apartments.com.
+   - Be mindful of differences in HTML structure and the availability of different features on these sites.
+
+REMINDER:
+- * Before proceeding to model training, ensure all scraped data is consistent, and any missing values are handled appropriately. *
+- Consider whether additional features (e.g., temporal patterns or property types) would help improve your fraud detection model.
+"""
+
+
 # -----------------------------------------
 # Data Preprocessing
 # -----------------------------------------
@@ -100,13 +168,6 @@ def combined_anomaly_detection(df):
 # -----------------------------------------
 # Continuous Learning / Retraining the Model
 # -----------------------------------------
-def save_new_listing(listing_data):
-    # TODO: Make DB for this
-
-    # Save the new listing to a CSV or database for retraining
-    new_data = pd.DataFrame([listing_data])
-    new_data.to_csv("data/new_listings.csv", mode='a', header=False, index=False)
-
 def retrain_model(initial_df, new_listings_df):
     """
     Retrains the model using new listings data combined with the initial training data.

@@ -2,7 +2,7 @@ data/
 graphs/
 notes.txt
 
-scraped_listing.db
+db/scraped_listing.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
