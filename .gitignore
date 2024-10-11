@@ -2,6 +2,8 @@ data/
 graphs/
 notes.txt
 
+scraped_listing.db
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
