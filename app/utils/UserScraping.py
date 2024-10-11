@@ -113,7 +113,7 @@ def scrapeListing(url):
         'listing_id': pID,
         'listing_name': listing_name,
         'price': price_value,
-        'adress': street_address,
+        'address': street_address,
         'city': city,
         'state': state,
         'postal_code': postal_code,
