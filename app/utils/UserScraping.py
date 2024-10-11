@@ -4,7 +4,6 @@ import pandas as pd
 import json
 import re
 
-
 # Features we need: Listing Number, Price, Address, Agent Name, Agent Number, NumBedrooms, NumBathrooms, Stories, DatePosted, SqFT, Latitude, Longitude, Description and Title, ImageSrc
 # Currently working to get Title, Price and Location. Will need to do more to get all features. 
 url1 = 'https://staugustine.craigslist.org/apa/d/saint-augustine-modern-bed-townhouse-in/7791808730.html'
@@ -111,18 +110,18 @@ def scrapeListing(url):
     # Create the dataframe
 
     Userdata = {
-        'Listing_ID': pID,
-        'Price': price_value,
-        'Listing Name': listing_name,
-        'Street Address': street_address,
-        'City': city,
-        'State': state,
-        'Postal Code': postal_code,
-        'Latitude': latitude,
-        'Longitude': longitude,
-        'Bedrooms': number_of_bedrooms,
-        'Bathrooms': number_of_bathrooms,
-        'Time Posted': datetime_value
+        'listing_id': pID,
+        'listing_name': listing_name,
+        'price': price_value,
+        'adress': street_address,
+        'city': city,
+        'state': state,
+        'postal_code': postal_code,
+        'latitude': latitude,
+        'longitude': longitude,
+        'bedrooms': number_of_bedrooms,
+        'bathrooms': number_of_bathrooms,
+        'time_posted': datetime_value
     }
     return Userdata
 

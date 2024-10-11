@@ -1,10 +1,10 @@
 # API endpoints (routers)
 # The logic for scraping, detecting, etc.
-
 from fastapi import APIRouter, HTTPException
 from app.models.listing import ListingRequest
 from ml.anomaly_detection import detect_anomalies, save_new_listing  # Import anomaly detection logic
 from app.utils.UserScraping import scrapeListing
+from db.database import insert_listing
 from ml.retrain import retrain_if_needed
 
 router = APIRouter()
@@ -36,3 +36,21 @@ async def check_listing(request: ListingRequest):  # Expecting the body to be pa
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@router.post("/scrape")
+async def scrape_url(url: str):
+    try:
+        # Step 1: Scrape the listing data from the given URL
+        data = scrapeListing(url)
+        
+        if not data:
+            raise HTTPException(status_code=400, detail="Could not scrape the listing")
+        
+        # Step 2: Save the scraped data to the database using the raw SQLite method
+        try:
+            insert_listing(data)  # Direct SQLite insertion
+            return {"message": f"Listing {data.get('listing_id')} saved to the database."}
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Error saving to database: {str(e)}")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

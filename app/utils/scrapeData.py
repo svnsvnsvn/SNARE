@@ -1,74 +1,52 @@
-# Functions for scraping Zillow, Craigslist
+# This file handles the logic for determining which scraper to use based on the URL (Craigslist, Zillow, Apartments.com).
+import argparse
+from scrapers.scrape_craigslist import scrape_craigslist
+from scrapers.scrape_zillow import scrape_zillow
+from scrapers.scrape_apartmentscom import scrape_apartments
 
-import requests
-from bs4 import BeautifulSoup
-import pandas as pd
-import json
+import sys
+import os
 
-# https://staugustine.craigslist.org/search/apa#search=1~gallery~0~1
+# Add the project root (two directories up) to PYTHONPATH
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+
+from db.database import insert_listing
+
 
 def scrape_listing(url):
-    print("Attempting to scrape listing info...")
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    
-    # Check if request was successful (status code 200)
-    if response.status_code == 200:
-        print("Request successful!")
+    if 'craigslist.org' in url:
+        return scrape_craigslist(url)
+    elif 'zillow.com' in url:
+        return scrape_zillow(url)
+    elif 'apartments.com' in url:
+        return scrape_apartments(url)
     else:
-        print(f"Request failed with status code: {response.status_code}")
-
-    soup = BeautifulSoup(response.content,'html.parser')
-
-    # Can use prettify to see the raw html structure that is being pulled. 
-    # print(soup.prettify()[:1000])  # Print the first 1000 characters
-
-    #Features we need: Listing Number, Price, Address, Agent Name, Agent Number, NumBedrooms, NumBathrooms, Stories, DatePosted, SqFT, Latitude, Longitude, Description and Title, ImageSrc
-    # Currently working to get Title, Price and Location. Will need to do more to get all features. 
-
-    # Find all listing containers using <li> with class 'cl-static-search-result'
-    listings = soup.find_all('li', class_='cl-static-search-result')
-
-    # Create empty lists to store the data
-    titles = []
-    prices = []
-    locations = []
-
-    # Loop through each listing and extract the title, price, and location
-    for listing in listings:
-        # Extract the title
-        title_div = listing.find('div', class_='title')
-        title = title_div.text.strip() if title_div else 'No title'
-        
-        # Extract the price
-        price_div = listing.find('div', class_='price')
-        price = price_div.text.strip() if price_div else 'No price'
-        
-        # Extract the location
-        location_div = listing.find('div', class_='location')
-        location = location_div.text.strip() if location_div else 'No location'
-        
-        # Append the data to the respective lists
-        titles.append(title)
-        prices.append(price)
-        locations.append(location)
-
-    # Create a DataFrame from the collected data
-    # df = pd.DataFrame({
-    #     'Title': titles,
-    #     'Price': prices,
-    #     'Location': locations
-    # })
-
-    df = {
-        'Title': titles,
-        'Price': prices,
-        'Location': locations
-    }
-
-    # Print the DataFrame to see the results
-    print(df)
-
-    # Return the extracted data as a dictionary
-    return df
+        print(f"Unsupported URL: {url}")
+        return None
     
+def save_scraped_data(scraped_data):
+    """Insert the scraped data into the database."""
+    if scraped_data:
+        for listing in scraped_data:
+            insert_listing(listing)
+
+def main():
+    print("hello.")
+    
+    parser = argparse.ArgumentParser(
+    prog = "scrapeData",
+    description=  "This program scrapes apartment listing information from Craigslist, Zillow, and Appartments.com and stores relevant listing data in a database for model training."
+    )
+
+    parser.add_argument('--aptURL', type=str, required=True, help="The URL to be scraped from. Should be from either Zillow, Apartments.com, or Craigslist.")
+    
+    args = parser.parse_args()
+    scraped_data = scrape_listing(args.aptURL)
+    if scraped_data:
+        save_scraped_data(scraped_data)
+        print("Scraped data saved to database.")
+    else:
+        print("No data scraped.")
+
+if __name__  == "__main__":
+    main()
