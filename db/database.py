@@ -30,18 +30,21 @@ def create_tables():
     # Create Craigslist table
     cursor.execute(f'''
         CREATE TABLE IF NOT EXISTS {schema}.craigslist_listings (
-            listing_id TEXT PRIMARY KEY,
-            listing_name TEXT,
-            price TEXT, 
-            address TEXT,
-            city TEXT,
-            state TEXT,
-            postal_code TEXT,
-            latitude REAL,
-            longitude REAL,
-            bedrooms REAL,
-            bathrooms REAL,
-            time_posted TEXT
+        listing_id TEXT PRIMARY KEY,
+        listing_name TEXT,
+        price REAL,  -- Converted to a REAL number for better handling in database
+        address TEXT,
+        city TEXT,
+        state TEXT,
+        postal_code TEXT,
+        latitude REAL,
+        longitude REAL,
+        bedrooms REAL,
+        bathrooms REAL,
+        time_posted TEXT,
+        description TEXT,
+        phone_number TEXT,  -- Storing phone numbers as text since they may contain non-numeric characters (e.g., hyphens)
+        square_footage REAL -- Square footage as a real number
         )
     ''')
 

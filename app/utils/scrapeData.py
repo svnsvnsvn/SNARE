@@ -5,9 +5,9 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
 
-from scrapers.scrape_craigslist import scrape_craigslist
-from scrapers.scrape_zillow import scrape_zillow
-from scrapers.scrape_apartmentscom import scrape_apartments
+from spiders.scrape_craigslist import scrape_craigslist
+from spiders.scrape_zillow import scrape_zillow
+from spiders.scrape_apartmentscom import scrape_apartments
 
 # Add the project root (two directories up) to PYTHONPATH
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))

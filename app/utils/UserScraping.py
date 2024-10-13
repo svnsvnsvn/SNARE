@@ -5,10 +5,6 @@ import json
 import re
 import time
 
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 # Features we need: Listing Number, Price, Address, Agent Name, Agent Number, NumBedrooms, NumBathrooms, Stories, DatePosted, SqFT, Latitude, Longitude, Description and Title, ImageSrc
 # Currently working to get Title, Price and Location. Will need to do more to get all features.
@@ -19,86 +15,76 @@ url4 = "https://jacksonville.craigslist.org/apa/d/jacksonville-one-month-free-by
 url5 = "https://gainesville.craigslist.org/apa/d/near-uf-spacious-bedroom-bath-apt-in/7789759036.html"
 url6 = "https://orlando.craigslist.org/apa/d/casselberry-500-off-first-months-rent/7787017002.html#"
 
-
-# Initialize Selenium WebDriver
-def init_driver():
-    """_summary_
-
-    Returns:
-        _type_: _description_
+def convert_price(price_str):
     """
-    driver = webdriver.Safari()
-    return driver
-
-
-# Use Selenium to interact with the page and reveal the phone number
-def get_phone_number(driver):
-    """_summary_
-
-    Args:
-        driver (_type_): _description_
-
-    Returns:
-        _type_: _description_
+    Converts the price string (e.g., "$1,299") to a numerical value (int or float).
     """
-    # Locate the <a> tag with the class 'show-contact' and click it
+    if price_str:
+        # Remove dollar sign and commas, and convert to float or int
+        return float(price_str.replace('$', '').replace(',', ''))
+    return None  # Return None if no price is found
+
+def convert_lat_long(lat_str, long_str):
+    """
+    Converts latitude and longitude strings to float values.
+    """
     try:
-        show_contact_button = driver.find_element(
-            By.XPATH, "//a[contains(@class, 'show-contact')]"
-        )
-        driver.execute_script(
-            "arguments[0].scrollIntoView();", show_contact_button
-        )  # Scroll into view
-        show_contact_button.click()  # Click the link to reveal contact info
-    except Exception as e:
-        print(f"Failed to click the show contact button: {e}")
-        # print(driver.page_source)  # Print the page source for debugging
-        return None
+        latitude = float(lat_str) if lat_str else None
+        longitude = float(long_str) if long_str else None
+        return latitude, longitude
+    except ValueError:
+        return None, None  # Return None if the conversion fails
+    
+def extract_square_footage(text):
+    """
+    Extracts square footage from a given text (title or description) using regex.
+    Captures patterns like '675 ft²', '675 sqft', '675 sq ft', etc.
+    """
+    # Regular expression pattern to match square footage
+    sqft_pattern = re.compile(r'(\d{3,4})\s?(sqft|sq ft|ft²)', re.IGNORECASE)
+    
+    # Search for the pattern in the provided text
+    sqft_match = sqft_pattern.search(text)
+    
+    # If a match is found, return the numeric part of the square footage
+    if sqft_match:
+        return int(sqft_match.group(1))  # Return only the numeric part as an integer
+    
+    # If no match is found, return None
+    return None
 
-    # After clicking, retrieve the 'data-href' attribute, which contains the link to the contact info
-    try:
-        data_href = show_contact_button.get_attribute("data-href")
-        if data_href:
-            # Construct the full URL for the contact info
-            contact_info_url = f"https://jacksonville.craigslist.org{data_href}"
-
-            # Load the new page that contains the contact info
-            driver.get(contact_info_url)
-
-            # Wait for the phone number to appear on this new page
-            phone_number = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(
-                    (By.XPATH, "//b[contains(text(),'Call:')]")
-                )
-            )
-            return phone_number.text.strip()
-        else:
-            print("No 'data-href' found in the show contact button")
-            return None
-    except Exception as e:
-        print(f"Failed to retrieve phone number from 'data-href': {e}")
-        return None
-
+def extract_phone_number(soup):
+    """
+    Extracts phone numbers from the entire page content using regex.
+    This will capture any pattern that looks like a phone number.
+    """
+    page_text = soup.get_text()  # Extract all text from the page
+    # Regex pattern to match phone numbers (common formats with or without separators)
+    phone_number_pattern = re.compile(r'\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}')
+    phone_numbers = phone_number_pattern.findall(page_text)
+    
+    # Return the first found phone number or None if none found
+    return phone_numbers[0] if phone_numbers else None
 
 def scrapeListing(url):
     response = requests.get(url)
     if response.status_code != 200:
         print(f"Request failed with status code: {response.status_code}")
         return None
+    
     soup = BeautifulSoup(response.content, "html.parser")
-    driver = init_driver()
-    driver.get(url)
-    time.sleep(3)  # Adjust time based on page load time
-    soup = BeautifulSoup(driver.page_source, "html.parser")
+
     # print(soup.prettify()[:1000])  # Print the first 1000 characters
 
     # ------------------------------------------------------------------------------------------------------------------------------
     # Find Price
     price_tag = soup.find("span", class_="price")
+
     # Extract the price value from the <span> tag
     if price_tag:
-        price_value = price_tag.text.strip()  # Use .strip() to remove extra spaces
+        price_value = convert_price(price_tag.text.strip())  # Convert price to a number
     else:
+        price_value = None
         print("Price tag not found")
 
     # ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -132,14 +118,13 @@ def scrapeListing(url):
     # ------------------------------------------------------------------------------------------------------------------------------
     # TODO: Try to find Agent Names and Phone Numbers. Does Craigslist have them?
     # Yes. Used Selenium for clicking the "reveal phone number" button. BeautifulSoup can't handle JS-based interactions.
-    # Extract the phone number if possible (using Selenium)
-    phone_number = None
-    if driver:
-        phone_number = get_phone_number(driver)
-        driver.quit()
+    # Extract the phone number using regex
+    phone_number = extract_phone_number(soup)
+
     # ------------------------------------------------------------------------------------------------------------------------------
     # TODO: Try to find the Stories Feature. This might be available in the description.
     # Explore if properties mention "stories" or levels and extract that feature if available.
+    #! Decided not to do this because apartments typically only have one floor anyways.
 
     # ------------------------------------------------------------------------------------------------------------------------------
     # TODO: Extract image source for future use (could help with image-based anomaly detection).
@@ -150,8 +135,10 @@ def scrapeListing(url):
     script_tag = soup.find("script", {"id": "ld_posting_data"})
     json_data = json.loads(script_tag.string)
 
-    longitude = json_data.get("longitude")
-    latitude = json_data.get("latitude")
+    longitude_str = json_data.get("longitude")
+    latitude_str = json_data.get("latitude")
+    latitude, longitude = convert_lat_long(latitude_str, longitude_str)
+
     number_of_bedrooms = json_data.get("numberOfBedrooms")
     number_of_bathrooms = json_data.get("numberOfBathroomsTotal")
     address = json_data.get("address", {})
@@ -165,10 +152,11 @@ def scrapeListing(url):
     # TODO Try to find where Square Footage is mentioned (possibly in the title or description).
     # This can be tricky because square footage might be mentioned differently in various listings (e.g., "ft²").
     # You could use regex to scan for patterns like "675ft²" or "675 sq ft" and extract that value.
+    square_footage = extract_square_footage(listing_name) or extract_square_footage(description)
 
     # ------------------------------------------------------------------------------------------------------------------------------
     # Compile all the data into a dictionary (DataFrame ready)
-    # TODO CONVERT PRICE, LONG, LAT INTO NUMERICAL VALUE
+
     Userdata = {
         "listing_id": pID,
         "listing_name": listing_name,
@@ -184,8 +172,7 @@ def scrapeListing(url):
         "time_posted": datetime_value,
         "description": description,
         "phone_number": phone_number,
-        # TODO Add square footage here once we find it
-        # 'square_footage': square_footage,
+        'square_footage': square_footage,
     }
     return Userdata
 
