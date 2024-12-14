@@ -1,64 +1,66 @@
 # Snare: Apartment Listing Anomaly Detector
 
-Snare is an anomaly detection tool designed to identify fraudulent apartment listings on platforms such as Craigslist, Zillow, and Apartments.com. By leveraging machine learning techniques and a combination of supervised and unsupervised models, Snare flags suspicious listings to protect users from scams.
+**Snare** is a cutting-edge anomaly detection tool designed to protect users from fraudulent apartment listings on platforms such as Craigslist, Zillow, and Apartments.com. By combining state-of-the-art machine learning techniques with robust data collection, Snare helps users identify scams and make informed decisions.
 
 ---
 
-## Features
+## Why Snare?
 
-### 1. **Data Collection**
-- Scrapes data from platforms like Craigslist, Zillow, and Apartments.com.
-- Two scraping functions:
-  - Scrape individual listings provided by the user.
-  - Scrape multiple listings and add them to the database for model analysis.
+Apartment rental scams cost individuals thousands of dollars each year. **Snare** aims to solve this problem by leveraging advanced anomaly detection algorithms and domain-specific insights to flag suspicious listings before users fall victim.
 
-### 2. **Anomaly Detection**
-- **Techniques Used:**
-  - Isolation Forest
-  - DBSCAN (Density-Based Spatial Clustering of Applications with Noise)
+---
+
+## Features 🚀
+
+### 🔍 Advanced Anomaly Detection
+- **Machine Learning Techniques:**
+  - Isolation Forest for identifying outliers.
+  - DBSCAN for clustering and density-based anomaly detection.
 - **Analyzed Features:**
   - Price metrics (e.g., price per bedroom, price per square foot).
   - Presence of suspicious words in descriptions.
   - Phone number patterns (e.g., multiple agent associations).
-  - Proximity to important locations like universities and military bases.
+  - Proximity to high-population areas and points of interest.
 
-### 3. **Database Integration**
-- Powered by **PostgreSQL** via Supabase for efficient data storage and retrieval.
+### 🌐 Comprehensive Web Scraping
+- Scrapes data from Craigslist, Zillow, and Apartments.com.
+- Two scraping functions:
+  1. Scrape individual listings based on user input.
+  2. Batch scrape listings for database analysis and model training.
 
-### 4. **API**
-- Built with **FastAPI** to serve anomaly detection results.
+### 📊 Intelligent Feature Engineering
+- Flags anomalies based on:
+  - Price ratios.
+  - Keyword analysis (e.g., scammy language).
+  - Phone number and contact patterns.
+  - Time on market and proximity to key locations.
 
-### 5. **Web Interface**
-- User-friendly interface for submitting URLs and receiving detailed anomaly detection insights.
+### 💾 Robust Database Integration
+- Powered by **PostgreSQL** via Supabase for scalable and efficient data storage.
+- Tracks listings, model results, and retraining logs.
 
-### 6. **Model Retraining**
-- Logic implemented for retraining the model when new data is added, ensuring continuous improvement.
+### 🌟 User-Friendly Web Interface
+- Built with **FastAPI** for streamlined API interactions.
+- Intuitive web interface for submitting URLs and receiving detection insights.
 
----
-
-## Technical Details
-
-### Architecture
-1. **Web Scraping**
-   - Extracts key features such as price, address, bedrooms, bathrooms, time posted, and more.
-   - Ensures robust handling of incomplete data (e.g., missing phone numbers).
-
-2. **Machine Learning**
-   - Combines supervised and unsupervised techniques for robust anomaly detection.
-   - Key features include:
-     - Distance Suspiciousness: Calculates suspiciousness based on proximity to high-population areas.
-     - Contains Suspicious Diction: Flags listings with scammy keywords.
-     - Phone Number Patterns: Detects anomalies in phone number usage.
-
-3. **Database**
-   - PostgreSQL stores listing data, model outputs, and retraining logs.
-
-4. **Deployment**
-   - Target platforms: Heroku, AWS.
+### 🔄 Continuous Model Improvement
+- Implements logic for retraining anomaly detection models based on new data, ensuring continuous refinement and accuracy.
 
 ---
 
-## Installation
+## Technical Stack 💻
+
+| Stack Component   | Technology Used                |
+|-------------------|--------------------------------|
+| **Frontend**      | HTML, CSS, JavaScript          |
+| **Backend**       | FastAPI, Python                |
+| **Database**      | PostgreSQL, Supabase           |
+| **Machine Learning** | Scikit-learn, NumPy, Pandas     |
+| **Web Scraping**  | BeautifulSoup, Selenium        |
+
+---
+
+## Installation 🛠️
 
 1. Clone the repository:
    ```bash
@@ -71,7 +73,7 @@ Snare is an anomaly detection tool designed to identify fraudulent apartment lis
    pip install -r requirements.txt
    ```
 
-3. Set up PostgreSQL database via Supabase:
+3. Set up the PostgreSQL database via Supabase:
    - Follow Supabase setup instructions [here](https://supabase.com/).
    - Add your database credentials to `.env`.
 
@@ -80,24 +82,35 @@ Snare is an anomaly detection tool designed to identify fraudulent apartment lis
    uvicorn app.main:app --reload
    ```
 
----
-
-## Usage
-
-1. **Scraping Listings**
-   - Use the web interface to submit URLs or batch scrape listings.
-
-2. **View Results**
-   - Analyze flagged listings through the web interface.
-
-3. **API Integration**
-   - Use the provided FastAPI endpoints for custom integrations.
+5. Access the web interface at `http://localhost:8000`.
 
 ---
 
-## Future Enhancements
+## Usage 📚
 
-- Improve scraping functionality for additional platforms.
-- Add advanced fraud detection metrics (e.g., image analysis).
+### 1. Scraping Listings
+- Use the web interface to submit URLs for analysis or batch scrape listings into the database.
+
+### 2. View Results
+- Analyze flagged listings directly from the web interface.
+
+### 3. API Integration
+- Integrate Snare with your existing tools via its FastAPI-powered API endpoints.
+
+---
+
+## Real-World Applications 🌍
+
+- **Individual Renters:** Identify fraudulent listings before engaging.
+- **Real Estate Platforms:** Enhance user trust by integrating Snare's detection engine.
+- **Market Analysts:** Study patterns of fraudulent activity in the housing market.
+
+---
+
+## Future Roadmap 🛤️
+
+- **Image Analysis:** Integrate AI to detect anomalies in listing photos.
+- **Enhanced Scalability:** Add multi-threaded scraping and caching for high-performance data collection.
+- **Community Integration:** Allow users to report and share flagged listings.
 
 ---
