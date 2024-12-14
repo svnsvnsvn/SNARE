@@ -62,7 +62,7 @@ Snare is an anomaly detection tool designed to identify fraudulent apartment lis
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/snare.git
+   git clone https://github.com/svnsvnsvn/snare.git
    cd snare
    ```
 
