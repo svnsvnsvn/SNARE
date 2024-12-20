@@ -1,6 +1,6 @@
 # Snare: Apartment Listing Anomaly Detector
 
-**Snare** is a cutting-edge anomaly detection tool designed to protect users from fraudulent apartment listings on platforms such as Craigslist, Zillow, and Apartments.com. By combining machine learning techniques with robust data collection, Snare helps users identify scams and make informed decisions.
+**Snare** is an anomaly detection tool designed to protect users from fraudulent apartment listings on platforms such as Craigslist, Zillow, and Apartments.com. By combining machine learning techniques with robust data collection, Snare helps users identify scams and make informed decisions.
 
 ---
 
