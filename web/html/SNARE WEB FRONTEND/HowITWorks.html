@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works - SNARE WEB</title>
+    <style>
+        :root {
+            --primary: #8A2BE2;
+            --primary-light: #9D50BB;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #f8f8f8;
+            --card-bg: rgba(30, 30, 30, 0.7);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--darker) 0%, #16082f 100%);
+            color: var(--light);
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        .logo {
+            width: 125px;
+            height: 125px;
+            margin-right: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        
+        
+        .brand {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .brand-name {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary) 0%, #cc6eff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+        
+        .brand-tagline {
+            font-size: 12px;
+            opacity: 0.7;
+            max-width: 300px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(90deg, var(--primary) 0%, #cc6eff 100%);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-light);
+        }
+        
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin: 50px 0 30px;
+        }
+        
+        .page-title h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, var(--primary) 0%, #cc6eff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .page-title p {
+            font-size: 18px;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .explanation {
+            background: rgba(20, 20, 20, 0.6);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .explanation h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--primary-light);
+        }
+        
+        .explanation p {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+        
+        .feature-box {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .feature-box:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 12px;
+            padding: 2px;
+            background: linear-gradient(135deg, var(--primary) 0%, #6a11cb 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+        
+        .feature-box:hover:before {
+            opacity: 1;
+        }
+        
+        .feature-box h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--primary-light);
+            position: relative;
+            z-index: 1;
+        }
+        /* Add this to your existing CSS */
+        .feature-box h3,
+        .feature-box > p {
+            transition: opacity 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-box:hover h3,
+        .feature-box:hover > p {
+            opacity: 0;
+        }
+
+/* Ensure feature-description has higher z-index */
+        .feature-description {
+    /* Your existing styles */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(12, 12, 12, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            text-align: center;
+            z-index: 2; /* Add this to ensure it appears above the title */
+        }
+        
+        .feature-description {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(12, 12, 12, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .feature-box:hover .feature-description {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .feature-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(138, 43, 226, 0.4) 0%, transparent 70%);
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+        
+        .feature-box:hover .feature-glow {
+            opacity: 1;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            opacity: 0.7;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="navbar">
+                <div class="logo-container">
+                    <div class="logo"><img src = "SnareLogo.png"></div>
+                    <div class="brand">
+                        <div class="brand-name">SNARE WEB</div>
+                        <div class="brand-tagline">(Scam Network Anomaly Recognition Engine, Web Based Evaluation Bot)</div>
+                    </div>
+                </div>
+                <div class="nav-links">
+                    <a href="Index.html">Home</a>
+                    <a href="HowITWorks.html">How it Works</a>
+                    <a href="Why.html">Why</a>
+                    <a href="AboutUs.html">About Us</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            <div class="page-title">
+                <h1>How SNARE WEB Works</h1>
+                <p>Advanced AI technology to detect apartment listing scams</p>
+            </div>
+            
+            <div class="explanation">
+                <h2>Our Anomaly Detection Technology</h2>
+                <p>SNARE WEB utilizes two powerful machine learning algorithms to identify potentially fraudulent apartment listings: Isolation Forest and DBSCAN (Density-Based Spatial Clustering of Applications with Noise).</p>
+                
+                <p>Isolation Forest works by isolating observations by randomly selecting a feature and then randomly selecting a split value between the maximum and minimum values of the selected feature. Since recursive partitioning can be represented by a tree structure, the number of splittings required to isolate a sample is equivalent to the path length from the root node to the terminating node. This path length, averaged over a forest of random trees, is a measure of normality and our decision function. Anomalies are more susceptible to isolation and thus have shorter paths.</p>
+                
+                <p>DBSCAN is a density-based clustering algorithm that groups together points that are closely packed together, marking as outliers points that lie alone in low-density regions. This allows SNARE WEB to identify listings that deviate from normal patterns in the high-dimensional feature space that represents legitimate listings.</p>
+                
+                <p>By combining these two powerful algorithms, SNARE WEB can identify subtle patterns that humans might miss, providing you with a reliable assessment of a listing's legitimacy.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-box">
+                    <div class="feature-glow"></div>
+                    <h3>Price Analysis</h3>
+                    <p>Evaluates if the listing price is within market expectations</p>
+                    <div class="feature-description">
+                        <p>Our algorithm analyzes the listing price relative to the location, size, amenities, and current market conditions to determine if it's suspiciously below market value—a common tactic in rental scams.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-box">
+                    <div class="feature-glow"></div>
+                    <h3>Image Analysis</h3>
+                    <p>Detects suspicious patterns in listing photos</p>
+                    <div class="feature-description">
+                        <p>SNARE WEB scans images for signs of manipulation, watermarks from other sites, inconsistent lighting, and other indicators that photos may have been stolen from legitimate listings.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-box">
+                    <div class="feature-glow"></div>
+                    <h3>Text Pattern Recognition</h3>
+                    <p>Identifies suspicious language and content</p>
+                    <div class="feature-description">
+                        <p>Our NLP algorithms detect common linguistic patterns found in fraudulent listings, including urgency tactics, grammar issues, inconsistent details, and vague descriptions designed to hide a property's non-existence.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-box">
+                    <div class="feature-glow"></div>
+                    <h3>Contact Info Verification</h3>
+                    <p>Evaluates legitimacy of provided contact details</p>
+                    <div class="feature-description">
+                        <p>SNARE WEB analyzes listing contact information against known patterns of scammer behavior, including use of temporary email services, inconsistent area codes, and missing local address information.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-box">
+                    <div class="feature-glow"></div>
+                    <h3>Cross-Listing Detection</h3>
+                    <p>Checks if the same property appears elsewhere</p>
+                    <div class="feature-description">
+                        <p>Our system searches for duplicate listings across multiple platforms to identify if the same property is being advertised with different details or by different supposed landlords—a red flag for potential scams.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-box">
+                    <div class="feature-glow"></div>
+                    <h3>Payment Method Analysis</h3>
+                    <p>Evaluates requested payment methods for risk</p>
+                    <div class="feature-description">
+                        <p>SNARE WEB identifies high-risk payment requests like wire transfers, cryptocurrency, gift cards, or cash apps that offer no fraud protection—payment methods frequently demanded by scammers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 SNARE WEB. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
