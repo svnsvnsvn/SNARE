@@ -1,3 +1,4 @@
+
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -8,12 +9,12 @@ import time
 
 # Features we need: Listing Number, Price, Address, Agent Name, Agent Number, NumBedrooms, NumBathrooms, Stories, DatePosted, SqFT, Latitude, Longitude, Description and Title, ImageSrc
 # Currently working to get Title, Price and Location. Will need to do more to get all features.
-url1 = "https://staugustine.craigslist.org/apa/d/saint-augustine-modern-bed-townhouse-in/7791808730.html"
-url2 = "https://staugustine.craigslist.org/apa/d/saint-augustine-bedroom-bath-doublewide/7791918230.html"
-url3 = "https://staugustine.craigslist.org/apa/d/saint-augustine-fully-furnished-studio/7791998736.html"
-url4 = "https://jacksonville.craigslist.org/apa/d/jacksonville-one-month-free-by-hurry/7788164796.html#"
-url5 = "https://gainesville.craigslist.org/apa/d/near-uf-spacious-bedroom-bath-apt-in/7789759036.html"
-url6 = "https://orlando.craigslist.org/apa/d/casselberry-500-off-first-months-rent/7787017002.html#"
+url1 = "https://staugustine.craigslist.org/apa/d/saint-augustine-fully-furnished/7847425449.html"
+# url2 = "https://staugustine.craigslist.org/apa/d/saint-augustine-bedroom-bath-doublewide/7791918230.html"
+# url3 = "https://staugustine.craigslist.org/apa/d/saint-augustine-fully-furnished-studio/7791998736.html"
+# url4 = "https://jacksonville.craigslist.org/apa/d/jacksonville-one-month-free-by-hurry/7788164796.html#"
+# url5 = "https://gainesville.craigslist.org/apa/d/near-uf-spacious-bedroom-bath-apt-in/7789759036.html"
+# url6 = "https://orlando.craigslist.org/apa/d/casselberry-500-off-first-months-rent/7787017002.html#"
 
 def convert_price(price_str):
     """
@@ -66,15 +67,13 @@ def extract_phone_number(soup):
     # Return the first found phone number or None if none found
     return phone_numbers[0] if phone_numbers else None
 
-def scrapeListing(url):
+def extractFeatures(url):
     response = requests.get(url)
     if response.status_code != 200:
         print(f"Request failed with status code: {response.status_code}")
         return None
     
     soup = BeautifulSoup(response.content, "html.parser")
-
-    # print(soup.prettify()[:1000])  # Print the first 1000 characters
 
     # ------------------------------------------------------------------------------------------------------------------------------
     # Find Price
@@ -116,13 +115,13 @@ def scrapeListing(url):
     )
 
     # ------------------------------------------------------------------------------------------------------------------------------
-    # TODO: Try to find Agent Names and Phone Numbers. Does Craigslist have them?
+    # TODO: Try to find Agent Names and Phone Numbers. Does Craigslist have them? (this now works)
     # Yes. Used Selenium for clicking the "reveal phone number" button. BeautifulSoup can't handle JS-based interactions.
     # Extract the phone number using regex
     phone_number = extract_phone_number(soup)
 
     # ------------------------------------------------------------------------------------------------------------------------------
-    # TODO: Try to find the Stories Feature. This might be available in the description.
+    # TODO: Try to find the Stories Feature. This might be available in the description. 
     # Explore if properties mention "stories" or levels and extract that feature if available.
     #! Decided not to do this because apartments typically only have one floor anyways.
 
@@ -172,11 +171,29 @@ def scrapeListing(url):
         "time_posted": datetime_value,
         "description": description,
         "phone_number": phone_number,
-        'square_footage': square_footage,
+        "square_footage": square_footage,
+        "url": url
     }
     return Userdata
 
 
 # Print the DataFrame example
 # Uncomment the following lines to test a specific listing
-# print(scrapeListing(url6))
+# print(extractFeatures(url1))
+
+
+'''
+
+ANN when you come back: try scraping the following links for additional features.
+- Try scraping a bunch of listings just to see if you can get a good amount of data.
+- These links contain information about average rent prices and household income by zipcode. This could be useful for the model to determine if a listing is overpriced or underpriced based on the average price in that area.
+- These are secondary datasets that can be used to enrich the primary dataset.
+
+
+secondary dataset links. Want to include the average price/rent per zipcode in the model. 850$ might be normal in the an average zipcode, but would be a big red flag in the most expensive zipcode.
+https://www.huduser.gov/portal/datasets/fmr/smallarea/index.html?utm_source=chatgpt.com
+https://www.unitedstateszipcodes.org/rankings/zips-in-fl/median_monthly_rent/
+http://www.usa.com/rank/florida-state--median-household-income--zip-code-rank.htm
+http://www.usa.com/rank/florida-state--house-median-value--zip-code-rank.htm?hl=32202&hlst=FL&yr=9000
+
+'''

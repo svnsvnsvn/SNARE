@@ -1,12 +1,12 @@
 # API endpoints (routers)
 # The logic for scraping, detecting, etc.
 from fastapi import APIRouter, HTTPException
-from app.models.listing import ListingRequest
-from ml.anomaly_detection import detect_anomalies  # Import anomaly detection logic
-from app.utils.UserScraping import scrapeListing
-from app.utils.scrapeData import save_scraped_data
-from db.database import insert_listing
-from ml.retrain import retrain_if_needed
+from models.listing import ListingRequest
+# from anomaly_detection import detect_anomalies  # Import anomaly detection logic
+from scrapers.extractFeatures import extractFeatures 
+# from app.utils.scrapeData import save_scraped_data
+# from db.database import insert_listing
+# from ml.retrain import retrain_if_needed
 
 router = APIRouter()
 print("Starting...")
@@ -16,9 +16,9 @@ async def check_listing(request: ListingRequest):  # Expecting the body to be pa
     print("Checking...")
     try:
         # Step 1: Scrape the listing data from the URL
-        listing_data = scrapeListing(request.url)
+        listing_data = extractFeatures(request.url)
 
-        print(listing_data)
+        '''print(listing_data)
         
         print("\nDone scraping. Now Detecting anomalies.")
 
@@ -34,7 +34,18 @@ async def check_listing(request: ListingRequest):  # Expecting the body to be pa
         # Step 5: Return whether the listing is suspicious
         is_suspicious = len(anomalies) > 0  # True if anomalies were found
         
-        return {"url": request.url, "is_suspicious": is_suspicious}
+        return {"url": request.url, "is_suspicious": is_suspicious}'''
+                
+        # For now, just return the scraped data
+        # TODO: Add anomaly detection later
+        is_suspicious = False  # Placeholder
+                
+        return {
+    "url": request.url, 
+    "is_suspicious": is_suspicious,
+    "name": listing_data.get("listing_name", "Unknown") if listing_data else "Unknown",
+    "scraped_data": listing_data
+}
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -43,7 +54,7 @@ async def check_listing(request: ListingRequest):  # Expecting the body to be pa
 async def scrape_url(url: str):
     try:
         # Step 1: Scrape the listing data from the given URL
-        data = scrapeListing(url)
+        data = extractFeatures(url)
 
         print(data)
         
@@ -60,3 +71,8 @@ async def scrape_url(url: str):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+    # Note: I feel like the second function is redundant, but I left it in for now. Why allow users to scrape a URL if they can just use the first function?
+    # Maybe the first function is for checking if a listing is suspicious, while the second one is for scraping and saving to the database?
+    # I think its better to keep the first for checking and scraping as well as saving to the database and the second one should be deleted. 
+    # This makes sense because the first one is for checking if a listing is suspicious and the second one is for scraping and saving to the database.

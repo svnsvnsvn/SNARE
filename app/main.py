@@ -1,5 +1,11 @@
+import os
+import sys
+from pathlib import Path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))  # Adjust the path to your project structure
+
 from fastapi import FastAPI
-from app.routes.listings import router as listings_router
+from routes.listings import router as listings_router
+
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()

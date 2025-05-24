@@ -21,7 +21,7 @@ const Home = () => {
 
       if (response.ok) {
         const data = await response.json()
-        setResult(`The listing for ${data.address} is ${data.is_suspicious ? 'suspicious' : 'not suspicious'}`)
+        setResult(`The listing for ${data.name} is ${data.is_suspicious ? 'suspicious' : 'not suspicious'}`)
       } else {
         setResult('Error: Could not check the listing. Please try again.')
       }
@@ -35,8 +35,8 @@ const Home = () => {
   return (
     <>
       {/* Background glow effects */}
-      {/* <div className="absolute top-[20%] left-[10%] w-[300px] h-[300px] rounded-full bg-gradient-radial from-primary/20 to-transparent blur-[30px] -z-10"></div> */}
-      {/* <div className="absolute bottom-[10%] right-[15%] w-[300px] h-[300px] rounded-full bg-gradient-radial from-primary/20 to-transparent blur-[30px] -z-10"></div> */}
+      <div className="absolute top-[20%] left-[10%] w-[300px] h-[300px] rounded-full bg-gradient-radial from-primary/20 to-transparent blur-[30px] -z-10"></div>
+      <div className="absolute bottom-[10%] right-[15%] w-[300px] h-[300px] rounded-full bg-gradient-radial from-primary/20 to-transparent blur-[30px] -z-10"></div>
       
       <main>
         {/* <div className="w-[90%] max-w-[1200px] mx-auto px-5"> */}

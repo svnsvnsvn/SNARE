@@ -1,3 +1,7 @@
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # may need to add this to other files to ensure that theyre treated as packages which is important because we are using relative imports and that means that the __init__.py files are not being recognized becaue they are not in the same directory as the file that is being run. 
+# the this in question is the __init__.py file in the app directory. it is used to mark a directory as a package because it contains the __init__.py file. otherwise, the directory is not treated as a package and the __init__.py file is not executed.
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -5,8 +9,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import time
 import json
-from UserScraping import scrapeListing
-from tqdm import tqdm  # Import tqdm for progress tracking
+from extractFeatures import extractFeatures
+from tqdm import tqdm  
 
 def init_driver():
     """
@@ -15,6 +19,7 @@ def init_driver():
     driver = None
     try:
         driver = webdriver.Safari()
+        print("Safari WebDriver initialized.")
     except Exception as e:
         print(f"Error initializing Safari WebDriver: {e}")
     return driver
@@ -26,16 +31,23 @@ def get_listing_links(driver):
     time.sleep(5)  # Optional: Adjust sleep time if the page loads slower
 
     soup = BeautifulSoup(driver.page_source, 'html.parser')
-    
+        
     # Find the <a> tags within 'gallery-card' divs
     div_containers = soup.find_all('div', class_='gallery-card')
+    
+    print(f"Found {len(div_containers)} listing containers on the page.")
+    
     
     # Extract the <a> tag inside each 'gallery-card' div
     listing_links = []
     for div in div_containers:
-        a_tag = div.find('a', class_='cl-app-anchor text-only posting-title')
+        # a_tag = div.find('a', class_='cl-app-anchor text-only posting-title') # need a better way to find this and identify the listing
+        # instead of using the class name, we can use the href attribute to find the link
+        a_tag = div.find('a', href=True)  # find the first <a> tag with an href attribute
         if a_tag:
             listing_links.append(a_tag['href'])
+            
+    print(f"Extracted {len(listing_links)} listing links.")
     
     return listing_links
 
@@ -53,7 +65,7 @@ def click_next_page(driver):
         print("Next Button Found.")
         return True
     except Exception as e:
-        print("No more pages found or error clicking next:", e)
+        print("No more pages found or error clicking next:", e) 
         return False
 
 def scrape_craigslist(craigslist_search_url, max_listings=5000, save_interval=500):
@@ -88,8 +100,8 @@ def scrape_craigslist(craigslist_search_url, max_listings=5000, save_interval=50
 
                 print(f"Scraping listing URL: {link}")
 
-                # Call UserScraping function to scrape the individual listing
-                data = scrapeListing(link)
+                # Call extract features function to scrape the individual listing
+                data = extractFeatures(link)
 
                 if data:
                     print(f"Successfully scraped data: {data}")
@@ -113,3 +125,7 @@ def scrape_craigslist(craigslist_search_url, max_listings=5000, save_interval=50
 
     print(f"Scraped {len(all_listings_data)} listings.")
     return all_listings_data
+
+
+# i noticed that craigslist does this thing where it tells you the posoiton of where you are in the list of listings i.e.,: https://jacksonville.craigslist.org/search/apa#search=2~gallery~198 
+# i wonder if that can be stored in the json file as well to possibly help with scraping the data so that we can know how many listings there are in total and how many we have scraped so far.
