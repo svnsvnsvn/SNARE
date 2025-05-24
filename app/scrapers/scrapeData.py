@@ -1,25 +1,15 @@
 # This file handles the logic for determining which scraper to use based on the URL (Craigslist, Zillow, Apartments.com).
 # in order to gather listings to be scraped, you must run this file to commence the scraping process.
 
-# this file is responsible for scraping apartment listings from various websites (Craigslist, Zillow, Apartments.com) and storing the relevant data in a database. It uses argparse to handle command-line arguments and provides a clear structure for scraping and saving data.
-# The script is designed to be run from the command line, and it requires a URL to be passed as an argument. It then determines which website the URL belongs to and calls the appropriate scraping function. The scraped data is then inserted into a database for further processing or analysis.
-# The script is modular, allowing for easy addition of new scraping functions for other websites in the future. It also includes error handling and progress tracking during the scraping process.
-
 import argparse
 import sys
 import os
 import json
 from pathlib import Path
 
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
-
 from spiders.scrape_craigslist import scrape_craigslist
 from spiders.scrape_zillow import scrape_zillow
 from spiders.scrape_apartmentscom import scrape_apartments
-
-# Add the project root (two directories up) to PYTHONPATH
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
 # from db.database import insert_listing
 
@@ -45,6 +35,14 @@ def append_listing(listing_data, source):
 
         if source not in data:
             print(f"Source {source} not recognized.")
+            data[source] = []
+            return
+        
+        # where in this particular script would i use the data['position'] variable?
+
+        # Check if the listing already exists in the source's list
+        if any(listing['listing_id'] == listing_data['listing_id'] for listing in data[source]):
+            print(f"Listing {listing_data['listing_id']} already exists in {source}. Skipping.")
             return
 
         data[source].append(listing_data)

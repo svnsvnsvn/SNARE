@@ -1,9 +1,10 @@
 # API endpoints (routers)
 # The logic for scraping, detecting, etc.
 from fastapi import APIRouter, HTTPException
-from models.listing import ListingRequest
+from app.models.listing import ListingRequest
+from app.scrapers.extractFeatures import extractFeatures
+
 # from anomaly_detection import detect_anomalies  # Import anomaly detection logic
-from scrapers.extractFeatures import extractFeatures 
 # from app.utils.scrapeData import save_scraped_data
 # from db.database import insert_listing
 # from ml.retrain import retrain_if_needed
