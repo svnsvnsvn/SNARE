@@ -180,3 +180,5 @@ dist-ssr
 # Build files
 build/
 out/
+
+Improvements.md
