@@ -21,7 +21,7 @@ const Home = () => {
 
       if (response.ok) {
         const data = await response.json()
-        setResult(`The listing for ${data.name} is ${data.is_suspicious ? 'suspicious' : 'not suspicious'}`)
+        setResult(`The listing for '${data.name}' is ${data.is_suspicious ? 'suspicious' : 'not suspicious'}.`)
       } else {
         setResult('Error: Could not check the listing. Please try again.')
       }
