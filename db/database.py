@@ -1,10 +1,14 @@
 import psycopg2
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  
 
 # Connection string for PostgreSQL (use your database credentials)
 DB_PARAMS = {
     'dbname': 'postgres',
     'user': 'postgres.fxqhhoszoafxgikxbbpy',
-    'password': 'godawlphinz',
+    'password': os.getenv('DB_PWD'),
     'host': 'aws-0-us-east-1.pooler.supabase.com',  # or use your cloud hostname
     'port': '6543'
 }
