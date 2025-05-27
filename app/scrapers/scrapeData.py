@@ -1,55 +1,99 @@
 # This file handles the logic for determining which scraper to use based on the URL (Craigslist, Zillow, Apartments.com).
-# in order to gather listings to be scraped, you must run this file to commence the scraping process.
 
 import argparse
-import sys
-import os
 import json
 from pathlib import Path
 
-from spiders.scrape_craigslist import scrape_craigslist
-from spiders.scrape_zillow import scrape_zillow
-from spiders.scrape_apartmentscom import scrape_apartments
+from spiders.spider_craigslist import scrape_craigslist
+from spiders.spider_zillow import scrape_zillow_search
+from app.scrapers.extractFeatures import extractFeatures
 
 # from db.database import insert_listing
 
-JSON_FILE = Path("../../data/listings.json")
+JSON_FILE = Path("data/listings.json")
 
 
 def scrape_listing(url):
-    if "craigslist.org" in url:
-        return (scrape_craigslist(url), "craigslist_listings")
+    """
+    Smart function that handles both individual listings and search URLs
+    """
+    print(f"Processing URL: {url}")
+    
+    # Detect URL type and scrape accordingly
+    if "/search/" in url and 'gallery' in url:
+        print("Detected Craigslist search URL")
+        scraped_data = scrape_craigslist(url, max_listings=2000)
+        
+    elif "/homes/" in url or "/apartments/" in url and ("zillow.com" in url):
+
+        print("Detected Zillow search URL") 
+        scraped_data = scrape_zillow_search(url, max_listings=2000)
+        
     elif "zillow.com" in url:
-        return scrape_zillow(url)
+        print("Detected individual Zillow listing")
+        data = extractFeatures(url)  # Will use ScraperAPI automatically
+        scraped_data = [data] if data else None
+        
+    elif "craigslist.org" in url:
+        print("Detected individual Craigslist listing")
+        data = extractFeatures(url)
+        scraped_data = [data] if data else None
+        
     elif "apartments.com" in url:
-        return scrape_apartments(url)
+        print("Detected Apartments.com listing")
+        data = extractFeatures(url)
+        scraped_data = [data] if data else None
+        
     else:
-        print(f"Unsupported URL: {url}")
+        print(f"Unknown URL type, trying extractFeatures: {url}")
+        data = extractFeatures(url)
+        scraped_data = [data] if data else None
+    
+    # Process the scraped data
+    if scraped_data and len(scraped_data) > 0:
+        # Get source from first item
+        first_item_source = scraped_data[0]["source"]
+        
+        source_map = {
+            "craigslist": "craigslist_listings",
+            "zillow": "zillow_listings", 
+            "apartments_com": "apartments_listings"
+        }
+        
+        return (scraped_data, source_map.get(first_item_source, "unknown"))
+    
+    else:
+        print("No data scraped or scraping failed")
         return None
-
-
+        
 def append_listing(listing_data, source):
     """Append listing data to the appropriate section in the JSON file."""
+    # Check if listing_id is None or empty
+    if not listing_data.get('listing_id'):
+        print(f"Warning: Listing has no ID. Skipping to prevent duplicates.")
+        print(f"  - URL: {listing_data.get('url')}")
+        print(f"  - Name: {listing_data.get('listing_name')}")
+        return
+    
     with open(JSON_FILE, 'r+') as f:
         data = json.load(f)
 
         if source not in data:
-            print(f"Source {source} not recognized.")
+            print(f"Source {source} not recognized. Creating new category.")
             data[source] = []
-            return
         
-        # where in this particular script would i use the data['position'] variable?
-
         # Check if the listing already exists in the source's list
         if any(listing['listing_id'] == listing_data['listing_id'] for listing in data[source]):
             print(f"Listing {listing_data['listing_id']} already exists in {source}. Skipping.")
             return
 
         data[source].append(listing_data)
+        print(f"✓ Added listing {listing_data['listing_id']} to {source}")
 
         f.seek(0)
         json.dump(data, f, indent=4)
-        f.truncate() 
+        f.truncate()
+
 
 def save_scraped_data(scraped_data, src):
     """Insert the scraped data into the database."""
@@ -58,9 +102,8 @@ def save_scraped_data(scraped_data, src):
             # insert_listing(listing, src)
             append_listing(listing, src)
         
-
 def main():
-    print("hello.")
+    print("Welcome to the SNARE Scraper.")
 
     parser = argparse.ArgumentParser(
         prog="scrapeData",
@@ -75,14 +118,18 @@ def main():
     )
 
     args = parser.parse_args()
-    scraped_data, src = scrape_listing(args.aptURL)
 
-    if scraped_data:
+    result = scrape_listing(args.aptURL) 
+    
+    if result:  
+        scraped_data, src = result  
         save_scraped_data(scraped_data, src)
         print("Scraped data saved to database.")
     else:
         print("No data scraped.")
 
 
+
 if __name__ == "__main__":
     main()
+
