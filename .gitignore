@@ -183,3 +183,5 @@ build/
 out/
 
 Improvements.md
+db/database_setup.py
+app/scrapers/extractFeatures.py

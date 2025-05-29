@@ -8,9 +8,11 @@ from spiders.spider_craigslist import scrape_craigslist
 from spiders.spider_zillow import scrape_zillow_search
 from app.scrapers.extractFeatures import extractFeatures
 
-# from db.database import insert_listing
+# Import database functionality
+from db.database_setup import ListingsDatabase, migrate_from_json
 
-JSON_FILE = Path("data/listings.json")
+DB = ListingsDatabase("data/listings.db")
+JSON_FILE = Path("data/listings.json")  # Kept for backward compatibility
 
 
 def scrape_listing(url):
@@ -51,6 +53,7 @@ def scrape_listing(url):
     
     # Process the scraped data
     if scraped_data and len(scraped_data) > 0:
+        print(f"Scraped {len(scraped_data)} listings from {url}")
         # Get source from first item
         first_item_source = scraped_data[0]["source"]
         
@@ -66,69 +69,163 @@ def scrape_listing(url):
         print("No data scraped or scraping failed")
         return None
         
-def append_listing(listing_data, source):
-    """Append listing data to the appropriate section in the JSON file."""
-    # Check if listing_id is None or empty
-    if not listing_data.get('listing_id'):
-        print(f"Warning: Listing has no ID. Skipping to prevent duplicates.")
-        print(f"  - URL: {listing_data.get('url')}")
-        print(f"  - Name: {listing_data.get('listing_name')}")
-        return
-    
-    with open(JSON_FILE, 'r+') as f:
-        data = json.load(f)
-
-        if source not in data:
-            print(f"Source {source} not recognized. Creating new category.")
-            data[source] = []
-        
-        # Check if the listing already exists in the source's list
-        if any(listing['listing_id'] == listing_data['listing_id'] for listing in data[source]):
-            print(f"Listing {listing_data['listing_id']} already exists in {source}. Skipping.")
-            return
-
-        data[source].append(listing_data)
-        print(f"✓ Added listing {listing_data['listing_id']} to {source}")
-
-        f.seek(0)
-        json.dump(data, f, indent=4)
-        f.truncate()
-
-
 def save_scraped_data(scraped_data, src):
-    """Insert the scraped data into the database."""
+    """
+    Insert the scraped data into the database
+    """
     if scraped_data:
-        for listing in scraped_data:
-            # insert_listing(listing, src)
-            append_listing(listing, src)
+        print(f"\nSaving {len(scraped_data)} listings to database...")
         
+        # Ensure all listings have the correct source
+        for listing in scraped_data:
+            listing['source'] = src.replace('_listings', '')
+        
+        # Insert into database
+        successful = DB.insert_multiple_listings(scraped_data)
+        
+        if successful > 0:
+            print(f"Successfully saved {successful} listings")
+            
+            # Show updated stats
+            stats = DB.get_stats()
+            print(f"Database now has {stats['total_listings']} total listings")
+        else:
+            print("No listings were saved")
+
+def show_database_summary():
+    """Display database statistics"""
+    stats = DB.get_stats()
+    
+    print("\n" + "="*50)
+    print("APARTMENT LISTINGS DATABASE SUMMARY")
+    print("="*50)
+    
+    print(f"Total Listings: {stats['total_listings']}")
+    
+    print(f"\nBy Source:")
+    for source in stats['by_source']:
+        print(f"  {source['source'].title()}: {source['count']} listings")
+    
+    if stats['price_stats']['price_count'] > 0:
+        print(f"\nPrice Statistics:")
+        print(f"  Range: ${stats['price_stats']['min_price']:,.0f} - ${stats['price_stats']['max_price']:,.0f}")
+        print(f"  Average: ${stats['price_stats']['avg_price']:,.0f}")
+        print(f"  Listings with prices: {stats['price_stats']['price_count']}")
+    
+    print(f"\nTop Cities:")
+    for city in stats['top_cities'][:5]:
+        print(f"  {city['city']}, {city['state']}: {city['count']} listings")
+    
+    print(f"\nBedroom Distribution:")
+    for bedroom in stats['bedroom_distribution']:
+        bed_label = "Studio" if bedroom['bedrooms'] == 0 else f"{bedroom['bedrooms']} bed"
+        print(f"  {bed_label}: {bedroom['count']} listings")
+
+def search_listings(**kwargs):
+    """
+    Search listings with various filters
+    
+    Examples:
+    search_listings(city="Jacksonville", max_price=2000)
+    search_listings(bedrooms=2, source="zillow")
+    """
+    return DB.get_listings(**kwargs)
+
 def main():
-    print("Welcome to the SNARE Scraper.")
+    print("Welcome to the SNARE Scraper (Database Edition)")
 
     parser = argparse.ArgumentParser(
         prog="scrapeData",
-        description="This program scrapes apartment listing information from Craigslist, Zillow, and Appartments.com and stores relevant listing data in a database for model training.",
+        description="This program scrapes apartment listing information from Craigslist, Zillow, and Apartments.com and stores relevant listing data in a database for model training.",
     )
 
     parser.add_argument(
         "--aptURL",
         type=str,
-        required=True,
         help="The URL to be scraped from. Should be from either Zillow, Apartments.com, or Craigslist.",
+    )
+    
+    parser.add_argument(
+        "--migrate",
+        action="store_true",
+        help="Migrate existing JSON data to database"
+    )
+    
+    parser.add_argument(
+        "--stats",
+        action="store_true", 
+        help="Show database statistics"
+    )
+    
+    parser.add_argument(
+        "--search",
+        type=str,
+        help="Search listings (e.g., 'city=Jacksonville&bedrooms=2')"
     )
 
     args = parser.parse_args()
-
-    result = scrape_listing(args.aptURL) 
     
-    if result:  
-        scraped_data, src = result  
-        save_scraped_data(scraped_data, src)
-        print("Scraped data saved to database.")
+    # Handle migration
+    if args.migrate:
+        json_path = "data/listings.json"
+        if Path(json_path).exists():
+            print("Starting migration from JSON to database...")
+            success = migrate_from_json(json_path)
+            if success:
+                print("Migration completed successfully!")
+                show_database_summary()
+            else:
+                print("Migration failed!")
+        else:
+            print("JSON file not found at data/listings.json")
+        return
+    
+    # Handle stats
+    if args.stats:
+        show_database_summary()
+        return
+    
+    # Handle search
+    if args.search:
+        search_params = {}
+        for param in args.search.split('&'):
+            if '=' in param:
+                key, value = param.split('=', 1)
+                # Try to convert to appropriate type
+                if key in ['bedrooms', 'limit']:
+                    search_params[key] = int(value)
+                elif key in ['min_price', 'max_price']:
+                    search_params[key] = float(value)
+                else:
+                    search_params[key] = value
+        
+        results = search_listings(**search_params)
+        print(f"\n🔍 Found {len(results)} listings:")
+        for listing in results[:10]:  # Show first 10
+            price_str = f"${listing['price']:,.0f}" if listing['price'] else "No price"
+            bed_str = f"{listing['bedrooms']}BR" if listing['bedrooms'] else "?BR"
+            print(f"  {listing['listing_name']} - {bed_str} - {price_str} ({listing['source']})")
+        
+        if len(results) > 10:
+            print(f"  ... and {len(results) - 10} more")
+        return
+    
+    # Handle URL scraping (original functionality)
+    if args.aptURL:
+        result = scrape_listing(args.aptURL)
+        
+        if result:  
+            scraped_data, src = result  
+            save_scraped_data(scraped_data, src)
+            print("\nScraped data saved to database")
+            show_database_summary()
+        else:
+            print("No data scraped")
     else:
-        print("No data scraped.")
-
-
+        # Show help and current stats if no arguments
+        parser.print_help()
+        print("\n" + "="*50)
+        show_database_summary()
 
 if __name__ == "__main__":
     main()
