@@ -6,7 +6,7 @@
 
 ## Research Context
 
-This project began as a hackathon experiment and evolved into a comprehensive study of anomaly detection in rental listing data. The project demonstrates end-to-end machine learning pipeline development, from data collection through model deployment, rather than serving as a production tool.
+This project began as a hackathon experiment and evolved into a study of anomaly detection in rental listing data. The project demonstrates end-to-end machine learning pipeline development, from data collection through model deployment, rather than serving as a production tool.
 
 ---
 
@@ -56,11 +56,11 @@ This project began as a hackathon experiment and evolved into a comprehensive st
 
 ### Main Interface
 ![SNARE Web Interface](snare-web-frontend/public/screenshots/main-interface.png)
-*Clean, professional interface for submitting rental listing URLs for analysis*
+*Clean interface for submitting rental listing URLs for analysis*
 
 ### Analysis Results
 ![Analysis Results Display](snare-web-frontend/public/screenshots/analysis-results.png)
-*Comprehensive ML model outputs showing ensemble anomaly detection results with individual algorithm scores*
+*ML model outputs showing ensemble anomaly detection results with individual algorithm scores*
 
 ---
 

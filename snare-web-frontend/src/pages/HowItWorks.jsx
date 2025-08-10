@@ -8,7 +8,7 @@ const HowItWorks = () => {
     {
       title: 'Feature Extraction',
       description: 'Processes listing characteristics for analysis',
-      details: 'Multiple property features are extracted and normalized, including spatial data, temporal patterns, and listing metadata to create a comprehensive feature vector for anomaly detection algorithms.'
+      details: 'Multiple property features are extracted and normalized, including spatial data, temporal patterns, and listing metadata to create a feature vector for anomaly detection algorithms.'
     },
     {
       title: 'Text Analysis (Experimental)',
