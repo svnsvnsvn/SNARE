@@ -55,11 +55,11 @@ This project began as a hackathon experiment and evolved into a study of anomaly
 ## Screenshots
 
 ### Main Interface
-![SNARE Web Interface](snare-web-frontend/public/screenshots/main-interface.png)
+![SNARE Web Interface](snare-web-frontend/public/main-interface.png)
 *Clean interface for submitting rental listing URLs for analysis*
 
 ### Analysis Results
-![Analysis Results Display](snare-web-frontend/public/screenshots/analysis-results.png)
+![Analysis Results Display](snare-web-frontend/public/analysis-results.png)
 *ML model outputs showing ensemble anomaly detection results with individual algorithm scores*
 
 ---
