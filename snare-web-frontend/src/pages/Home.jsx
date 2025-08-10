@@ -1,9 +1,28 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import apiService from '../services/apiService'
+import Config from '../config/config'
 
 const Home = () => {
   const [url, setUrl] = useState('')
   const [result, setResult] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [backendStatus, setBackendStatus] = useState('checking')
+
+  // Check backend connectivity on component mount
+  useEffect(() => {
+    Config.logConfig(); // Log configuration in development
+    checkBackendHealth();
+  }, []);
+
+  const checkBackendHealth = async () => {
+    try {
+      await apiService.healthCheck();
+      setBackendStatus('connected');
+    } catch (error) {
+      setBackendStatus('disconnected');
+      console.warn('Backend health check failed:', error.message);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -11,22 +30,11 @@ const Home = () => {
     setResult('Checking the listing...')
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/check_listing', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ url })
-      })
-
-      if (response.ok) {
-        const data = await response.json()
-        setResult(`The listing for '${data.name}' is ${data.is_suspicious ? 'suspicious' : 'not suspicious'}.`)
-      } else {
-        setResult('Error: Could not check the listing. Please try again.')
-      }
+      const data = await apiService.checkListing(url);
+      setResult(`The listing for '${data.name}' is ${data.is_suspicious ? 'suspicious' : 'not suspicious'}.`)
     } catch (error) {
-      setResult(`Error: ${error.message}. Please try again.`)
+      setResult(`Error: ${error.message}`)
+      console.error('API Error:', error);
     }
     
     setIsLoading(false)
@@ -41,6 +49,7 @@ const Home = () => {
       <main>
         {/* <div className="w-[90%] max-w-[1200px] mx-auto px-5"> */}
         <div>
+
           <div className="py-20 text-center flex flex-col items-center justify-center min-h-[calc(100vh-200px)]">
             <h1 className="text-5xl mb-5 font-normal bg-gradient-to-r from-primary to-purple-accent bg-clip-text text-transparent">
               Detect Apartment Scams with AI

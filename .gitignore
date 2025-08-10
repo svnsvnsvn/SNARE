@@ -1,9 +1,101 @@
+# Project-specific sensitive data
 data/
 graphs/
 spiders/
 notes.txt
-
 db/scraped_listing.db
+db/scraped_listing.json
+suspicion_score_heatmap.html
+
+# ENVIRONMENT VARIABLES & SECRETS
+.env*
+*.env
+.environment
+environment.json
+secrets.json
+config/secrets.*
+config/keys.*
+config/credentials.*
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+api_keys.txt
+credentials.txt
+passwords.txt
+
+# SCRAPERS & CRAWLERS
+spiders/
+scrapers/
+crawlers/
+app/scrapers/
+app/spiders/
+*/scrapers/
+*/spiders/
+
+# DATA & ANALYTICS 
+data/
+datasets/
+training_data/
+models/
+*.csv
+*.json
+*.xml
+*.xlsx
+*.xls
+final_training_set.*
+*training_set.*
+*dataset*
+listings.*
+
+# ML MODELS & WEIGHTS (PROPRIETARY ALGORITHMS)
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.pt
+*.pth
+*.onnx
+model_weights/
+trained_models/
+checkpoints/
+
+# SPECIFIC PROJECT FILES
+Improvements.md
+SnareFutureModelImprovements.docx
+NEWPrimaryDataset-MLS-RentalProperties.csv
+PrimaryDataset-MLS-RentalProperties.csv
+final_training_set.csv
+
+# SPECIFIC SPIDER FILES
+spider_apartmentscom.py
+spider_craigslist.py
+spider_zillow.py
+scrape_apartmentscom.py
+scrape_craigslist.py
+scrape_zillow.py
+scrape_apartments.py
+extractFeatures.py
+scrapeData.py
+UserScraping.py
+scraper.py
+
+# DATABASE FILES (CONTAINS SCRAPED DATA)
+*.db
+*.sqlite
+*.sqlite3
+listings.db
+listings.json
+scraped_listing.*
+
+# CONFIGURATION FILES (MAY CONTAIN SECRETS)
+config.py
+database_setup.py
+*/config.py
+*/database_setup.py
+
+# Python
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -105,7 +197,6 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
 .venv
 env/
 venv/
@@ -143,46 +234,184 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
-suspicion_score_heatmap.html
 
+# ==============================================================================
+# Node.js / Frontend
+# ==============================================================================
 
-# Logs
-logs
-*.log
+# Dependencies
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Build files
+# Build outputs
+dist/
+dist-ssr/
 build/
 out/
+*.local
 
-Improvements.md
-db/database_setup.py
-app/scrapers/extractFeatures.py
-SnareFutureModelImprovements.docx
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+jspm_packages/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Next.js build output
+.next
+
+# Nuxt.js build / generate output
+.nuxt
+
+# Gatsby files
+.cache/
+public
+
+# Vite cache
+.vite
+
+# Rollup cache
+.rollup.cache
+
+# Storybook build outputs
+.out
+.storybook-out
+
+# ==============================================================================
+# IDEs and Editors
+# ==============================================================================
+
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Operating System
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ==============================================================================
+# Miscellaneous
+# ==============================================================================
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# SSL certificates
+*.pem
+*.crt
+*.key
+
+# Backup files
+*.bak
+*.backup
+*.old

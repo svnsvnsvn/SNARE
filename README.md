@@ -68,21 +68,67 @@ Apartment rental scams cost individuals thousands of dollars each year. **Snare*
    cd snare
    ```
 
-2. Install dependencies:
+2. Set up environment variables:
+   ```bash
+   # Copy the example environment file and configure it
+   cp .env.example .env
+   # Edit .env with your actual configuration values
+   ```
+
+3. Install backend dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Set up the PostgreSQL database via Supabase:
-   - Follow Supabase setup instructions [here](https://supabase.com/).
-   - Add your database credentials to `.env`.
+4. Install frontend dependencies:
+   ```bash
+   cd snare-web-frontend
+   npm install
+   cd ..
+   ```
 
-4. Run the application:
+5. Run the application:
+
+   **Development Mode (recommended):**
+   ```bash
+   # Terminal 1: Start backend server
+   python run_server.py
+   
+   # Terminal 2: Start frontend development server
+   cd snare-web-frontend
+   npm run dev
+   ```
+
+   **Alternative backend start:**
    ```bash
    uvicorn app.main:app --reload
    ```
 
-5. Access the web interface at `http://localhost:8000`.
+6. Access the application:
+   - **Frontend:** http://localhost:3000
+   - **Backend API:** http://localhost:8000
+   - **API Documentation:** http://localhost:8000/docs
+
+### Quick Setup Script
+For automated setup, run:
+```bash
+chmod +x setup_dev.sh
+./setup_dev.sh
+```
+
+### Environment Configuration
+
+The application supports flexible configuration through environment variables:
+
+**Backend (.env):**
+- `PORT`: Server port (default: 8000)
+- `HOST`: Server host (default: 127.0.0.1)
+- `CORS_ALLOW_ORIGINS`: Allowed frontend origins
+- API keys and database credentials
+
+**Frontend (snare-web-frontend/.env):**
+- `VITE_API_BASE_URL`: Backend API URL (default: http://127.0.0.1:8000)
+- Environment-specific configurations available
 
 ---
 

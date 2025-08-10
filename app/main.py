@@ -2,16 +2,24 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routes.listings import router as listings_router
+from app.config import get_settings, get_cors_config, get_api_config
 
+# Load settings
+settings = get_settings()
+api_config = get_api_config()
+cors_config = get_cors_config()
 
-app = FastAPI()
+# Create FastAPI app with configuration
+app = FastAPI(
+    title=api_config["title"],
+    description=api_config["description"],
+    version=api_config["version"]
+)
 
+# Add CORS middleware with configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins, you can specify domains here
-    allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods (GET, POST, etc.)
-    allow_headers=["*"],  # Allows all headers
+    **cors_config
 )
 
 # Include listings routes
