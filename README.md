@@ -1,12 +1,12 @@
-# SNARE: Rental Listing Anomaly Detection Research Platform
+# SNARE: Rental Listing Anomaly Detection Research Project
 
-**SNARE (Scam Network Anomaly Recognition Engine)** is a research platform for experimenting with machine learning approaches to detect anomalous rental listings. This project explores anomaly detection techniques applied to real estate data collected primarily from Florida markets.
+**SNARE (Scam Network Anomaly Recognition Engine)** is a machine learning research project exploring anomaly detection techniques for identifying potentially fraudulent rental listings. This work demonstrates data collection, feature engineering, and ensemble ML approaches applied to real estate data collected primarily from Florida markets.
 
 ---
 
 ## Research Context
 
-This project began as a hackathon experiment and has evolved into a comprehensive study of anomaly detection in rental listing data. The platform demonstrates data collection, feature engineering, and machine learning implementation rather than serving as a production tool.
+This project began as a hackathon experiment and evolved into a comprehensive study of anomaly detection in rental listing data. The project demonstrates end-to-end machine learning pipeline development, from data collection through model deployment, rather than serving as a production tool.
 
 ---
 
@@ -163,7 +163,7 @@ The application supports flexible configuration through environment variables:
 
 ## Development Notes
 
-This platform represents a learning exercise and research tool rather than a production system. The models demonstrate interesting patterns in the data but require significant additional validation and refinement for practical deployment.
+This project represents a learning exercise and research study rather than a production system. The models demonstrate interesting patterns in the data but require significant additional validation and refinement for practical deployment.
 
 Key technical achievements:
 - End-to-end ML pipeline from data collection to web interface
