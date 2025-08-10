@@ -52,6 +52,18 @@ This project began as a hackathon experiment and evolved into a comprehensive st
 
 ---
 
+## Screenshots
+
+### Main Interface
+![SNARE Web Interface](snare-web-frontend/public/screenshots/main-interface.png)
+*Clean, professional interface for submitting rental listing URLs for analysis*
+
+### Analysis Results
+![Analysis Results Display](snare-web-frontend/public/screenshots/analysis-results.png)
+*Comprehensive ML model outputs showing ensemble anomaly detection results with individual algorithm scores*
+
+---
+
 ## Technical Stack
 
 | Component         | Technology                     |
