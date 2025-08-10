@@ -24,10 +24,10 @@ const Why = () => {
     <div className="container w-[90%] max-w-6xl mx-auto px-5">
       <div className="text-center my-12">
         <h1 className="text-4xl mb-4 gradient-text">
-          Why We Built SNARE WEB
+          Research Context & Problem Space
         </h1>
         <p className="text-lg opacity-80 max-w-2xl mx-auto">
-          The growing epidemic of rental scams in America and how we're fighting back
+          Understanding the rental fraud landscape that motivated this ML research project
         </p>
       </div>
       
@@ -85,18 +85,18 @@ const Why = () => {
         </p>
         
         <h2 className="text-3xl mb-5 text-primary-light">
-          Our Mission
+          Research Motivation
         </h2>
         <p className="leading-relaxed mb-5 opacity-90">
-          SNARE WEB was developed in response to this growing crisis. We believe that technology that enables scammers should be countered with technology that protects consumers. Our AI-powered platform gives renters the tools to identify potential fraud before they become victims—analyzing listings for the subtle patterns and red flags that might escape human detection.
+          This research project was motivated by the growing prevalence of rental fraud and the challenges traditional detection methods face in keeping up with evolving scam tactics. We wanted to explore whether machine learning approaches could identify patterns in fraudulent listings that might not be immediately obvious to human reviewers.
         </p>
         
         <p className="leading-relaxed mb-5 opacity-90">
-          By combining machine learning algorithms like Isolation Forest and DBSCAN with our comprehensive database of known scam patterns, we're creating a shield for vulnerable renters. Our goal is to dramatically reduce successful rental scams, protect consumers' financial security, and restore trust to the rental marketplace.
+          Our experimental platform combines multiple anomaly detection algorithms—Isolation Forest, DBSCAN, and Local Outlier Factor—to analyze rental listing features and identify potential outliers. While these techniques show promise in detecting unusual patterns, the project has highlighted the significant challenges of working with limited, imbalanced datasets and the complexity of defining "normal" in diverse rental markets.
         </p>
         
         <p className="leading-relaxed mb-5 opacity-90">
-          We believe everyone deserves safe access to housing without fear of fraud or deception. SNARE WEB represents our commitment to that vision—a future where technology empowers rather than endangers renters in their search for a place to call home.
+          This work serves as a learning exercise in applied machine learning, data engineering, and the practical difficulties of building detection systems for real-world problems. The platform demonstrates technical capabilities while honestly acknowledging the limitations and additional work needed for practical application.
         </p>
       </div>
       
@@ -105,7 +105,7 @@ const Why = () => {
           to="/" 
           className="bg-gradient-button text-white border-none py-4 px-10 text-lg rounded-full cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-purple-hover no-underline inline-block"
         >
-          Start Checking Listings Now
+          Explore the Research Platform
         </Link>
       </div>
     </div>

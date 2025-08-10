@@ -24,7 +24,7 @@ const Header = () => {
                 SNARE WEB
               </div>
               <div className="text-xs opacity-70 max-w-[300px] whitespace-nowrap">
-                (Scam Network Anomaly Recognition Engine, Web Based Evaluation Bot)
+                (Scam Network Anomaly Recognition Engine - Research Platform)
               </div>
             </div>
           </div>

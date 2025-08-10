@@ -61,6 +61,13 @@ class ApiService {
     });
   }
 
+  async checkManualListing(listingData) {
+    return this.makeRequest('/check_manual_listing', {
+      method: 'POST',
+      body: JSON.stringify(listingData),
+    });
+  }
+
   async healthCheck() {
     return this.makeRequest(Config.endpoints.health, {
       method: 'GET',

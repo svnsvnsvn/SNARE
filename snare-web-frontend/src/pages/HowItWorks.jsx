@@ -1,34 +1,34 @@
 const HowItWorks = () => {
   const features = [
     {
-      title: 'Price Analysis',
-      description: 'Evaluates if the listing price is within market expectations',
-      details: 'Our algorithm analyzes the listing price relative to the location, size, amenities, and current market conditions to determine if it\'s suspiciously below market value—a common tactic in rental scams.'
+      title: 'Price Pattern Analysis',
+      description: 'Examines pricing relative to market expectations',
+      details: 'The model analyzes listing prices in relation to location, size, and amenities to identify potential outliers that may indicate below-market pricing patterns often associated with fraudulent listings.'
     },
     {
-      title: 'Image Analysis',
-      description: 'Detects suspicious patterns in listing photos',
-      details: 'SNARE WEB scans images for signs of manipulation, watermarks from other sites, inconsistent lighting, and other indicators that photos may have been stolen from legitimate listings.'
+      title: 'Feature Extraction',
+      description: 'Processes listing characteristics for analysis',
+      details: 'Multiple property features are extracted and normalized, including spatial data, temporal patterns, and listing metadata to create a comprehensive feature vector for anomaly detection algorithms.'
     },
     {
-      title: 'Text Pattern Recognition',
-      description: 'Identifies suspicious language and content',
-      details: 'Our NLP algorithms detect common linguistic patterns found in fraudulent listings, including urgency tactics, grammar issues, inconsistent details, and vague descriptions designed to hide a property\'s non-existence.'
+      title: 'Text Analysis (Experimental)',
+      description: 'Explores linguistic patterns in descriptions',
+      details: 'Experimental natural language processing techniques examine listing descriptions for patterns that may correlate with fraudulent content, though this feature requires significant additional validation.'
     },
     {
-      title: 'Contact Info Verification',
-      description: 'Evaluates legitimacy of provided contact details',
-      details: 'SNARE WEB analyzes listing contact information against known patterns of scammer behavior, including use of temporary email services, inconsistent area codes, and missing local address information.'
+      title: 'Geographic Clustering',
+      description: 'Analyzes spatial distribution patterns',
+      details: 'Location-based features are examined using density clustering to identify listings that appear geographically isolated or inconsistent with known neighborhood patterns.'
     },
     {
-      title: 'Cross-Listing Detection',
-      description: 'Checks if the same property appears elsewhere',
-      details: 'Our system searches for duplicate listings across multiple platforms to identify if the same property is being advertised with different details or by different supposed landlords—a red flag for potential scams.'
+      title: 'Temporal Pattern Recognition',
+      description: 'Studies listing timing and duration patterns',
+      details: 'Research into posting times, listing durations, and update frequencies to identify potentially suspicious temporal behaviors in listing management.'
     },
     {
-      title: 'Payment Method Analysis',
-      description: 'Evaluates requested payment methods for risk',
-      details: 'SNARE WEB identifies high-risk payment requests like wire transfers, cryptocurrency, gift cards, or cash apps that offer no fraud protection—payment methods frequently demanded by scammers.'
+      title: 'Multi-Model Ensemble',
+      description: 'Combines multiple detection approaches',
+      details: 'Different machine learning models (Isolation Forest, DBSCAN, LOF) are combined to provide a more robust anomaly detection framework, though individual model performance varies significantly.'
     }
   ]
 
@@ -36,31 +36,35 @@ const HowItWorks = () => {
     <div className="container w-[90%] max-w-6xl mx-auto px-5">
       <div className="text-center my-12">
         <h1 className="text-4xl mb-4 gradient-text">
-          How SNARE WEB Works
+          Research Methodology
         </h1>
         <p className="text-lg opacity-80 max-w-2xl mx-auto">
-          Advanced AI technology to detect apartment listing scams
+          Exploring machine learning approaches for rental listing anomaly detection
         </p>
       </div>
       
       <div className="bg-black bg-opacity-60 p-8 rounded-2xl mb-10 border border-primary border-opacity-30 shadow-card">
         <h2 className="text-2xl mb-5 text-primary-light">
-          Our Anomaly Detection Technology
+          Experimental Anomaly Detection Approach
         </h2>
         <p className="leading-relaxed mb-5 opacity-90">
-          SNARE WEB utilizes two powerful machine learning algorithms to identify potentially fraudulent apartment listings: Isolation Forest and DBSCAN (Density-Based Spatial Clustering of Applications with Noise).
+          This research platform experiments with three machine learning algorithms to identify potentially fraudulent apartment listings: Isolation Forest, DBSCAN (Density-Based Spatial Clustering of Applications with Noise), and LOF (Local Outlier Factor).
         </p>
         
         <p className="leading-relaxed mb-5 opacity-90">
-          Isolation Forest works by isolating observations by randomly selecting a feature and then randomly selecting a split value between the maximum and minimum values of the selected feature. Since recursive partitioning can be represented by a tree structure, the number of splittings required to isolate a sample is equivalent to the path length from the root node to the terminating node. This path length, averaged over a forest of random trees, is a measure of normality and our decision function. Anomalies are more susceptible to isolation and thus have shorter paths.
+          Isolation Forest works by isolating observations through random feature selection and split values. The algorithm builds trees where anomalous patterns require fewer splits to isolate, making them detectable through shorter path lengths. This approach is particularly effective for identifying outliers in rental pricing and property characteristics.
         </p>
         
         <p className="leading-relaxed mb-5 opacity-90">
-          DBSCAN is a density-based clustering algorithm that groups together points that are closely packed together, marking as outliers points that lie alone in low-density regions. This allows SNARE WEB to identify listings that deviate from normal patterns in the high-dimensional feature space that represents legitimate listings.
+          DBSCAN identifies density-based clusters in the feature space, marking isolated points as outliers. This helps detect listings that deviate significantly from normal patterns in the multi-dimensional space of legitimate rental properties.
         </p>
         
         <p className="leading-relaxed mb-5 opacity-90">
-          By combining these two powerful algorithms, SNARE WEB can identify subtle patterns that humans might miss, providing you with a reliable assessment of a listing's legitimacy.
+          LOF (Local Outlier Factor) measures the local density deviation of a data point with respect to its neighbors. It identifies anomalies as points that have a substantially lower density than their neighbors, making it effective for detecting local outliers that might be missed by global methods.
+        </p>
+        
+        <p className="leading-relaxed mb-5 opacity-90">
+          <strong>Note:</strong> This is an experimental platform for research purposes. The models are trained on limited data and should not be used as the sole basis for rental decisions. Results are exploratory and require further validation.
         </p>
       </div>
       
