@@ -191,7 +191,6 @@ def main():
         for param in args.search.split('&'):
             if '=' in param:
                 key, value = param.split('=', 1)
-                # Try to convert to appropriate type
                 if key in ['bedrooms', 'limit']:
                     search_params[key] = int(value)
                 elif key in ['min_price', 'max_price']:
@@ -200,8 +199,8 @@ def main():
                     search_params[key] = value
         
         results = search_listings(**search_params)
-        print(f"\n🔍 Found {len(results)} listings:")
-        for listing in results[:10]:  # Show first 10
+        print(f"\nFound {len(results)} listings:")
+        for listing in results[:10]:  
             price_str = f"${listing['price']:,.0f}" if listing['price'] else "No price"
             bed_str = f"{listing['bedrooms']}BR" if listing['bedrooms'] else "?BR"
             print(f"  {listing['listing_name']} - {bed_str} - {price_str} ({listing['source']})")
@@ -210,7 +209,6 @@ def main():
             print(f"  ... and {len(results) - 10} more")
         return
     
-    # Handle URL scraping (original functionality)
     if args.aptURL:
         result = scrape_listing(args.aptURL)
         
