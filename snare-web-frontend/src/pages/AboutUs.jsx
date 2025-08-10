@@ -23,7 +23,7 @@ const AboutUs = () => {
           About This Project
         </h1>
         <p className="text-lg opacity-80 max-w-2xl mx-auto">
-          An experimental research platform for rental listing anomaly detection
+          A machine learning research project exploring rental listing anomaly detection
         </p>
       </div>
       
@@ -32,15 +32,15 @@ const AboutUs = () => {
           Project Background
         </h2>
         <p className="leading-relaxed mb-5 opacity-90">
-          SNARE WEB started as a hackathon project aimed at exploring machine learning approaches to detect potentially fraudulent rental listings. What began as a weekend experiment evolved into a more comprehensive research platform for studying anomaly detection in real estate data.
+          SNARE WEB started as a hackathon project aimed at exploring machine learning approaches to detect potentially fraudulent rental listings. What began as a weekend experiment evolved into a comprehensive research study demonstrating anomaly detection techniques applied to real estate data.
         </p>
         
         <p className="leading-relaxed mb-5 opacity-90">
-          The project focuses on the technical challenges of data collection, feature engineering, and anomaly detection rather than creating a production-ready consumer tool. We collected rental listing data primarily from Florida markets, engineered features around pricing patterns, geographic characteristics, and listing metadata, then experimented with multiple ML algorithms.
+          This project focuses on the technical challenges of data collection, feature engineering, and anomaly detection rather than creating a production-ready consumer tool. We collected rental listing data primarily from Florida markets, engineered features around pricing patterns, geographic characteristics, and listing metadata, then experimented with multiple ML algorithms.
         </p>
         
         <p className="leading-relaxed mb-5 opacity-90">
-          This platform demonstrates our learning process, technical implementation, and the challenges we encountered working with real-world data. While the models show interesting patterns, they require significant additional work and validation before being suitable for practical application. The project serves as a portfolio piece showcasing data science, machine learning, and full-stack development skills.
+          The web interface demonstrates our research process, technical implementation, and the challenges we encountered working with real-world data. While the models show interesting patterns, they require significant additional work and validation before being suitable for practical application. This project serves as a portfolio piece showcasing data science, machine learning, and full-stack development skills.
         </p>
       </div>
       
